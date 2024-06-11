@@ -1,0 +1,93 @@
+<div class="max-h-screen overflow-y-auto">
+    <form [formGroup]="entityForm" class="w-full" (ngSubmit)="onSave()">
+      <div class="border border-gray-300 rounded-lg p-6">
+
+        <div class="mb-4">
+          <input
+            type="text"
+            class="border border-gray-300 rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+            placeholder="First Name"
+            formControlName="firstName"
+          />
+          @if(entityForm.get('firstName')?.hasError('required') && entityForm.get('firstName')?.touched){
+            <div class="form-error">First Name is required</div>
+          }
+        </div>
+  
+        <div class="mb-4">
+          <input
+            type="text"
+            class="border border-gray-300 rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+            placeholder="Last Name"
+            formControlName="lastName"
+          />
+          @if(entityForm.get('lastName')?.hasError('required') && entityForm.get('lastName')?.touched){
+            <div class="form-error">Last Name is required</div>
+          }
+        </div>
+  
+        <div class="mb-4">
+          <input
+            type="email"
+            class="border rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+            placeholder="Email"
+            formControlName="email"
+          />
+          @if(entityForm.get('email')?.touched){
+            @if(entityForm.get('email')?.hasError('required')){
+              <div class="form-error">Email is required</div>
+            }
+            @if(entityForm.get('email')?.hasError('email')){
+              <div class="form-error">Email is invalid</div>
+            }
+          }
+        </div>
+
+        <div class="mb-4">
+            <input
+              type="text"
+              class="border border-gray-300 rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+              placeholder="Mobile Number"
+              formControlName="mobile"
+            />
+            @if(entityForm.get('mobile')?.hasError('required') && entityForm.get('mobile')?.touched){
+              <div class="form-error">Mobile Number is required</div>
+            }
+          </div>
+  
+        <div class="mb-4">
+          <input
+            type="date"
+            class="border border-gray-300 rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+            placeholder="Date of Birth"
+            formControlName="dob"
+          />
+          @if(entityForm.get('dob')?.hasError('required') && entityForm.get('dob')?.touched){
+            <div class="form-error">Date of Birth is required</div>
+          }
+        </div>
+
+        <div class="mb-4">
+            <input
+              type="date"
+              class="border border-gray-300 rounded-md px-4 py-2 mb-1 focus:outline-none focus:border-blue-500 block w-full"
+              placeholder="Date of Birth"
+              formControlName="doj"
+            />
+            @if(entityForm.get('doj')?.hasError('required') && entityForm.get('doj')?.touched){
+              <div class="form-error">Date of Joining is required</div>
+            }
+          </div>
+
+        <div class="flex justify-end px-0">
+          <button
+            type="submit"
+            class="text-white bg-blue-500 hover:bg-blue-600 focus:outline-none font-medium rounded-full px-6 py-3 text-center mt-5"
+          >
+            {{ entityId() ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
