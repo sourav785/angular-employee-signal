@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { EntitySignalStore } from './signal-store/entity.signal-store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EntityFormComponent } from './entity/ui-components/entity-form.component';
 @NgModule({
   declarations: [
     AppComponent
@@ -22,7 +23,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    //LoaderComponent,
     RouterOutlet,
     CommonModule,
     HttpClientModule,

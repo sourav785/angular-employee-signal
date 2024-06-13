@@ -11,7 +11,7 @@ import { EntitySignalStore } from "../../signal-store/entity.signal-store";
 
 export class EntityFormComponent implements OnInit{
 
-    entityId = input.required<number | undefined>();
+    entityId = input<number | undefined>();
 
     entitySignalStore = inject( EntitySignalStore );
 

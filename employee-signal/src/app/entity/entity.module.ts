@@ -11,7 +11,7 @@ import { TableComponent } from '../shared/table/table.component';
 
 
 @NgModule({
-  declarations: [ EntityComponent, EntityFormComponent ],
+  declarations: [ EntityComponent, EntityFormComponent],
   imports: [
     //CommonModule,
     EntityRoutingModule,

@@ -2,6 +2,7 @@ import { Component, OnInit, WritableSignal, effect, inject, signal } from "@angu
 import { EntitySignalStore } from "../../signal-store/entity.signal-store";
 import { ColumnDataType, ColumnDetails, Entity, TableConfigurationDetails } from "../models/entity.models";
 import { StateStatus } from "../../shared/model/shared.models";
+import { ActivatedRoute, Router } from "@angular/router";
 
 
 @Component({
@@ -68,7 +69,7 @@ export class EntityComponent implements OnInit{
       selectedEntityId: number | undefined = undefined;
       entityIdToDelete: number | undefined = undefined;  
       
-      constructor() {
+      constructor(private router: Router, private route: ActivatedRoute,) {
         effect(() => {
           if(this.entitySignalStore.entities()?.length){
             this.rowDetails.set(this.entitySignalStore.entities());
@@ -88,6 +89,7 @@ export class EntityComponent implements OnInit{
       openEntityAddModal(entity?: Entity): void {
         this.selectedEntityId = entity?.id;
         this.isEntityAddModalOpen = true;
+        this.router.navigate([`add-entity`]);
       }
     
       closeEntityAddModal(event?: boolean): void {

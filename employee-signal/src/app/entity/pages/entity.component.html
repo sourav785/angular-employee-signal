@@ -1,7 +1,7 @@
 <div class="flex justify-between items-center mb-6 px-4">
     <h4 class="font-bold text-2xl"></h4>
     <button
-      (click)="openEntityAddModal()"
+      [routerLink]="['/add-entity']"
       type="button"
       class="text-white bg-blue-500 hover:bg-blue-600 focus:outline-none font-medium rounded-full px-6 py-3 text-center mb-2 mt-5"
     >
@@ -39,13 +39,6 @@
     </div>
   </ng-template>
   </app-table>
-  
-  <app-modal [isOpen]="isEntityAddModalOpen" (closeModalOutput)="closeEntityAddModal($event)">
-    <app-entity-form
-      (closeModalOutputFromForm)="closeEntityAddModal($event)"
-      [entityId]="selectedEntityId"
-    ></app-entity-form>
-  </app-modal>
   
   <app-modal [isOpen]="isEntityDeleteModalOpen" (closeModalOutput)="onDeleteConfirmed(false)">
     <div class="border border-gray-300 rounded-lg p-6">
