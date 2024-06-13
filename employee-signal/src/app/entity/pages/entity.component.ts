@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, inject, signal } from "@angular/core";
+import { Component, OnInit, WritableSignal, effect, inject, signal } from "@angular/core";
 import { EntitySignalStore } from "../../signal-store/entity.signal-store";
 import { ColumnDataType, ColumnDetails, Entity, TableConfigurationDetails } from "../models/entity.models";
 import { StateStatus } from "../../shared/model/shared.models";
@@ -62,16 +62,49 @@ export class EntityComponent implements OnInit{
 
       StateStatus = StateStatus;
       public rowDetails: WritableSignal<Entity[]> = signal([]);
-      isEmployeeAddModalOpen = false;
-      isEmployeeDeleteModalOpen = false;
+      isEntityAddModalOpen = false;
+      isEntityDeleteModalOpen = false;
       entity: Entity | null = null;
-      selectedEmployeeId: number | undefined = undefined;
-      employeeIdToDelete: number | undefined = undefined;  
-
+      selectedEntityId: number | undefined = undefined;
+      entityIdToDelete: number | undefined = undefined;  
       
-
-    ngOnInit(): void {
-        
-    }
-
+      constructor() {
+        effect(() => {
+          if(this.entitySignalStore.entities()?.length){
+            this.rowDetails.set(this.entitySignalStore.entities());
+            this.closeEntityAddModal();
+          }
+        }, {allowSignalWrites: true});
+      }
+    
+      ngOnInit(): void {
+        this.getEntityList();
+      }
+    
+      private getEntityList(): void {
+        this.entitySignalStore.loadEntities();
+      }
+    
+      openEntityAddModal(entity?: Entity): void {
+        this.selectedEntityId = entity?.id;
+        this.isEntityAddModalOpen = true;
+      }
+    
+      closeEntityAddModal(event?: boolean): void {
+        this.entity = null;
+        this.isEntityAddModalOpen = false;
+      }
+    
+      openEntityDeleteModal(id: number | undefined): void {
+        this.entityIdToDelete = id;
+        this.isEntityDeleteModalOpen = true;
+      }
+    
+      onDeleteConfirmed(confirmed: boolean): void {
+        this.isEntityDeleteModalOpen = false;
+        if (confirmed) {
+          this.entitySignalStore.deleteEntity( <number>this.entityIdToDelete );
+        }
+        this.entityIdToDelete = undefined;
+      }
 }

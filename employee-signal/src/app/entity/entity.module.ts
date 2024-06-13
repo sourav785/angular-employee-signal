@@ -4,15 +4,21 @@ import { EntityRoutingModule } from './entity.routing';
 import { EntityFormComponent } from './ui-components/entity-form.component';
 import { EntityComponent } from './pages/entity.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from '../shared/modal/modal.component';
+import { LoaderComponent } from '../shared/loader/loader.component';
+import { TableComponent } from '../shared/table/table.component';
 
 
 
 @NgModule({
   declarations: [ EntityComponent, EntityFormComponent ],
   imports: [
-    CommonModule,
+    //CommonModule,
     EntityRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalComponent,
+    LoaderComponent,
+    TableComponent
   ],
   providers: [],
 })

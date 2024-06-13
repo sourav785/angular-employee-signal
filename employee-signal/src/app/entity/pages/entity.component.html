@@ -1,0 +1,72 @@
+<div class="flex justify-between items-center mb-6 px-4">
+    <h4 class="font-bold text-2xl"></h4>
+    <button
+      (click)="openEntityAddModal()"
+      type="button"
+      class="text-white bg-blue-500 hover:bg-blue-600 focus:outline-none font-medium rounded-full px-6 py-3 text-center mb-2 mt-5"
+    >
+      Add Employee
+    </button>
+  </div>
+  
+  @if(entitySignalStore.status() === StateStatus.LOADING){
+    <app-loader></app-loader>
+  }
+  
+  <app-table
+    [columnDetails]="columnDetails()"
+    [rowDetails]="rowDetails()"
+    [tableConfig]="tableConfig()"
+  >
+  <ng-template #editButtonTemplate let-entity="entity">
+    <div class="w-1/2 border p-4">
+      <button
+        (click)="openEntityAddModal(entity)"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Edit
+      </button>
+    </div>
+  </ng-template>
+  <ng-template #deleteButtonTemplate let-entity="entity">
+    <div class="w-1/2 border p-4">
+      <button
+        (click)="openEntityDeleteModal(entity.id)"
+        class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Delete
+      </button>
+    </div>
+  </ng-template>
+  </app-table>
+  
+  <app-modal [isOpen]="isEntityAddModalOpen" (closeModalOutput)="closeEntityAddModal($event)">
+    <app-entity-form
+      (closeModalOutputFromForm)="closeEntityAddModal($event)"
+      [entityId]="selectedEntityId"
+    ></app-entity-form>
+  </app-modal>
+  
+  <app-modal [isOpen]="isEntityDeleteModalOpen" (closeModalOutput)="onDeleteConfirmed(false)">
+    <div class="border border-gray-300 rounded-lg p-6">
+      <p class="p-4">Are you sure you want to delete?</p>
+      <div class="flex">
+        <div class="w-1/2 grid justify-items-start p-4">
+          <button
+            (click)="onDeleteConfirmed(true)"
+            class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border-solid"
+          >
+            Yes
+          </button>
+        </div>
+        <div class="w-1/2 grid justify-items-end p-4">
+          <button
+            (click)="onDeleteConfirmed(false)"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline border-solid"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </app-modal>

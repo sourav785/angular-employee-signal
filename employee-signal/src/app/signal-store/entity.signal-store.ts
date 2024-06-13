@@ -3,7 +3,7 @@ import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { Entity } from "../entity/models/entity.models";
 import { StateStatus } from "../shared/model/shared.models";
 import { Injectable, inject } from "@angular/core";
-import { EntityService } from "../entity/services/entity.service";
+import { EntityService } from "../services/entity.service";
 import { filter, pipe, switchMap, tap } from "rxjs";
 import { tapResponse } from "@ngrx/component-store";
 import { ToastrService } from "ngx-toastr";
@@ -25,15 +25,14 @@ const initialState: EntityState = {
 };
 
 export const EntitySignalStore = signalStore(
-    //{ providedIn: 'root' },
     withState(initialState),
     withMethods((store, entityService = inject(EntityService), toastr = inject(ToastrService)) => ({
-        updateEmployeeId(id:number): void{
+        updateEntityId(id:number): void{
             patchState(store, (state) => ({
                 entityID: id
             }));
         },
-        loadEmployees: rxMethod<void>(
+        loadEntities: rxMethod<void>(
             pipe(
                 tap(() => patchState(store,(state) => ({status: StateStatus.LOADING}))),
                 switchMap(() => {
@@ -57,7 +56,7 @@ export const EntitySignalStore = signalStore(
 
             ),
         ),
-        deleteEmployee: rxMethod<number>(
+        deleteEntity: rxMethod<number>(
             pipe(
                 filter((x) => !!x),
                 tap(() => patchState(store,(state) => ({status: StateStatus.LOADING}))),
@@ -68,12 +67,12 @@ export const EntitySignalStore = signalStore(
                                 patchState(store, (state) => ({
                                     entities: [...state.entities.filter((entity) => entity.id !== id)],
                                 }));
-                                toastr.success('Employee Deleted!');
+                                toastr.success('Entity Deleted!');
                             },
                             error: (error) => {
                                 console.log("Error");
                                 patchState(store, (state) => ({status: StateStatus.ERROR}));
-                                toastr.error('Employee Delete Error!');
+                                toastr.error('Entity Delete Error!');
                             },
                             finalize: () => {
                                 patchState(store, (state) => ({status: StateStatus.SUCCESS}));
@@ -84,7 +83,7 @@ export const EntitySignalStore = signalStore(
 
             ),
         ),
-        addEmployee: rxMethod<Entity>(
+        addEntity: rxMethod<Entity>(
             pipe(
                 filter((x) => !!x),
                 tap(() => patchState(store,(state) => ({status: StateStatus.LOADING}))),
@@ -95,12 +94,12 @@ export const EntitySignalStore = signalStore(
                                 patchState(store, (state) => ({
                                     entities: [...state.entities, response],
                                 }));
-                                toastr.success('Employee Added!');
+                                toastr.success('Entity Added!');
                             },
                             error: (error) => {
                                 console.log("Error");
                                 patchState(store, (state) => ({status: StateStatus.ERROR}));
-                                toastr.error('Employee Add Error!');
+                                toastr.error('Entity Add Error!');
                             },
                             finalize: () => {
                                 patchState(store, (state) => ({status: StateStatus.SUCCESS}));
@@ -111,7 +110,7 @@ export const EntitySignalStore = signalStore(
 
             ),
         ),
-        editEmployee: rxMethod<Entity>(
+        editEntity: rxMethod<Entity>(
             pipe(
                 filter((x) => !!x),
                 tap(() => patchState(store,(state) => ({status: StateStatus.LOADING}))),
@@ -122,12 +121,12 @@ export const EntitySignalStore = signalStore(
                                 patchState(store, (state) => ({
                                     entities: [...state.entities.map(x => x.id === response.id ? response : x)],
                                 }));
-                                toastr.success('Employee Edited!');
+                                toastr.success('Entity Edited!');
                             },
                             error: (error) => {
                                 console.log("Error");
                                 patchState(store, (state) => ({status: StateStatus.ERROR}));
-                                toastr.error('Employee Edit Error!');
+                                toastr.error('Entity Edit Error!');
                             },
                             finalize: () => {
                                 patchState(store, (state) => ({status: StateStatus.SUCCESS}));
@@ -138,10 +137,10 @@ export const EntitySignalStore = signalStore(
             ),
         ),
 
-        getEmployeeById: rxMethod<number | null>(
+        getEntityById: rxMethod<number | null>(
             pipe(
                 filter((x) => !!x),
-                tap(() => patchState(store,(state) => ({status: StateStatus.LOADING , selectedEmployee: null }))),
+                tap(() => patchState(store,(state) => ({status: StateStatus.LOADING , selectedEntity: null }))),
                 switchMap((id) => {
                     return entityService.getEntityById(id).pipe(
                         tapResponse({
@@ -153,7 +152,7 @@ export const EntitySignalStore = signalStore(
                             error: (error) => {
                                 console.log("Error");
                                 patchState(store, (state) => ({status: StateStatus.ERROR}));
-                                toastr.error('Employee Getting Error!');
+                                toastr.error('Entity Getting Error!');
                             },
                             finalize: () => {
                                 patchState(store, (state) => ({status: StateStatus.SUCCESS}));

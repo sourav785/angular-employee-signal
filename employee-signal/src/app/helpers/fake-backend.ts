@@ -23,7 +23,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.endsWith('/entities') && method === 'GET': 
                     return getEntities();
                 case url.match(/\/entities\/\d+$/) && method === 'GET': 
-                    return getEntityById();
+                    return getEntitiesById();
                 case url.match('/entities') && method ==='POST': 
                     return createEntity();
                 case url.match(/\/entities\/\d+$/) && method ==='PUT': 
@@ -38,35 +38,35 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return ok(entities.map((x) => basicDetails(x)));
           }
       
-          function getEntityById() {
-            const employee = entities.find((x) => x.id === idFromUrl());
-            return ok(basicDetails(employee));
+          function getEntitiesById() {
+            const entity = entities.find((x) => x.id === idFromUrl());
+            return ok(basicDetails(entity));
           }
       
           function createEntity() {
-            let employee = { ...body.employee };
+            let entity = { ...body.entity };
       
-            if (entities.find((x) => x.Email === employee.Email)) {
-              return error('Email "' + employee.Email + '" is already taken');
+            if (entities.find((x) => x.email === entity.email)) {
+              return error('Email "' + entity.email + '" is already taken');
             }
       
-            employee.id = entities.length
+            entity.id = entities.length
               ? Math.max(...entities.map((x) => x.id)) + 1
               : 1;
               
-            entities.push(employee);
+            entities.push(entity);
             localStorage.setItem(entityKey, JSON.stringify(entities));
-            return ok(employee);
+            return ok(entity);
           }
       
           function updateEntity() {
-            let params = body.employee;
-            let employee = entities.find((x) => x.id === idFromUrl());
+            let params = body.entity;
+            let entity = entities.find((x) => x.id === idFromUrl());
       
-            Object.assign(employee, params);
+            Object.assign(entity, params);
             localStorage.setItem(entityKey, JSON.stringify(entities));
       
-            return ok(employee);
+            return ok(entity);
           }
       
           function deleteEntity() {
@@ -92,9 +92,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return parseInt(urlParts[urlParts.length - 1]);
           }
       
-          function basicDetails(employee: any) {
-            const { id, FirstName, LastName, Email, DOB, Password } = employee;
-            return { id, FirstName, LastName, Email, DOB, Password };
+          function basicDetails(entity: any) {
+            const { id, firstName, lastName, email, mobile, dob, doj } = entity;
+            return { id, firstName, lastName, email, mobile, dob, doj };
           }
         }
 }
